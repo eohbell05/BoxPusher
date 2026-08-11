@@ -1,4 +1,5 @@
-﻿namespace BoxPusher;
+﻿using Microsoft.Maui.Controls.Shapes;
+namespace BoxPusher;
 
 public partial class MainPage : ContentPage
 {
@@ -45,22 +46,54 @@ public partial class MainPage : ContentPage
             BoardGrid.ColumnDefinitions.Add(new ColumnDefinition { Width = CellSize });
         }
 
-        // Add one label per cell
+        // Draw each cell
         for (int row = 0; row < state.Height; row++)
         {
             for (int col = 0; col < state.Width; col++)
             {
-                Label cell = new Label();
-                cell.Text = state.Grid[row, col].ToString();
-                cell.FontSize = 24;
-                cell.HorizontalTextAlignment = TextAlignment.Center;
-                cell.VerticalTextAlignment = TextAlignment.Center;
+                char c = state.Grid[row, col];
 
-                BoardGrid.Add(cell, col, row);
+                // The floor underneath everything
+                BoxView floor = new BoxView();
+                floor.Color = GetFloorColour(c);
+                BoardGrid.Add(floor, col, row);
+
+                // The player or box on top, if there is one
+                if (c == '@' || c == '+')
+                {
+                    Ellipse player = new Ellipse();
+                    player.Fill = Colors.CornflowerBlue;
+                    player.Margin = 6;
+                    BoardGrid.Add(player, col, row);
+                }
+                else if (c == '$' || c == '*')
+                {
+                    BoxView box = new BoxView();
+                    box.Color = (c == '*') ? Colors.LimeGreen : Colors.SaddleBrown;
+                    box.Margin = 5;
+                    box.CornerRadius = 4;
+                    BoardGrid.Add(box, col, row);
+                }
             }
         }
 
         MovesLabel.Text = "Moves: " + state.Moves;
+    }
+
+    // Walls are dark, targets are highlighted, everything else is plain floor
+    private Color GetFloorColour(char c)
+    {
+        if (c == '#')
+        {
+            return Colors.DimGray;
+        }
+
+        if (c == '.' || c == '*' || c == '+')
+        {
+            return Colors.LightGoldenrodYellow;
+        }
+
+        return Colors.WhiteSmoke;
     }
 
     // Shared by all four buttons
