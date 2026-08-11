@@ -8,24 +8,52 @@ public partial class MainPage : ContentPage
     // How big each cell is drawn, in device units
     private const int CellSize = 40;
 
+    // All the built-in levels, once they have loaded
+    private List<Level> levels = new List<Level>();
+
+    // Which one we are playing
+    private int currentIndex = 0;
+
     public MainPage()
     {
         InitializeComponent();
-        LoadTestLevel();
     }
 
-    // A hard-coded level just so we can test the game logic
-    private void LoadTestLevel()
+    // Runs every time the page appears on screen
+    protected override async void OnAppearing()
     {
-        Level level = new Level();
-        level.Name = "Test Level";
-        level.Rows.Add("#######");
-        level.Rows.Add("#     #");
-        level.Rows.Add("# $ . #");
-        level.Rows.Add("#  @  #");
-        level.Rows.Add("#######");
+        base.OnAppearing();
 
-        state = GameState.StartFrom(level);
+        // Only load once
+        if (levels.Count == 0)
+        {
+            await LoadLevelsAsync();
+        }
+    }
+
+    private async Task LoadLevelsAsync()
+    {
+        MovesLabel.Text = "Loading levels...";
+
+        levels = await LevelStore.GetBuiltInLevelsAsync();
+
+        if (levels.Count == 0)
+        {
+            MovesLabel.Text = "Could not load levels";
+            await DisplayAlert("Problem",
+                "The levels could not be downloaded. Check your internet connection and restart the app.",
+                "OK");
+            return;
+        }
+
+        StartLevel(0);
+    }
+
+    // Start playing the level at this position in the list
+    private void StartLevel(int index)
+    {
+        currentIndex = index;
+        state = GameState.StartFrom(levels[index]);
         DrawBoard();
     }
 
@@ -97,8 +125,14 @@ public partial class MainPage : ContentPage
     }
 
     // Shared by all four buttons
-    private void DoMove(int rowChange, int colChange)
+    // Shared by all four buttons
+    private async void DoMove(int rowChange, int colChange)
     {
+        if (state == null)
+        {
+            return;
+        }
+
         bool moved = state.Move(rowChange, colChange);
 
         if (moved)
@@ -107,7 +141,19 @@ public partial class MainPage : ContentPage
 
             if (state.IsSolved())
             {
-                DisplayAlert("Well done", "Level complete in " + state.Moves + " moves", "OK");
+                await DisplayAlert("Well done",
+                    levels[currentIndex].Name + " complete in " + state.Moves + " moves",
+                    "OK");
+
+                // Move on to the next level if there is one
+                if (currentIndex + 1 < levels.Count)
+                {
+                    StartLevel(currentIndex + 1);
+                }
+                else
+                {
+                    await DisplayAlert("Finished", "You have completed all the levels!", "OK");
+                }
             }
         }
     }
