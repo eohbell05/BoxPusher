@@ -22,7 +22,7 @@
         <!-- Direction buttons at the bottom -->
         <Grid Grid.Row="2"
               ColumnDefinitions="*,*,*"
-              RowDefinitions="Auto,Auto"
+              RowDefinitions="Auto,Auto,Auto"
               ColumnSpacing="10"
               RowSpacing="10">
 
@@ -30,6 +30,9 @@
             <Button Text="Left" Grid.Row="1" Grid.Column="0" Clicked="OnLeftClicked" />
             <Button Text="Down" Grid.Row="1" Grid.Column="1" Clicked="OnDownClicked" />
             <Button Text="Right" Grid.Row="1" Grid.Column="2" Clicked="OnRightClicked" />
+
+            <Button Text="Undo" Grid.Row="2" Grid.Column="0" Clicked="OnUndoClicked" />
+            <Button Text="Reset" Grid.Row="2" Grid.Column="2" Clicked="OnResetClicked" />
 
         </Grid>
 

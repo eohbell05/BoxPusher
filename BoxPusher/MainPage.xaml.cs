@@ -177,4 +177,30 @@ public partial class MainPage : ContentPage
     {
         DoMove(0, 1);
     }
+
+    private void OnUndoClicked(object sender, EventArgs e)
+    {
+        if (state == null)
+        {
+            return;
+        }
+
+        bool undone = state.Undo();
+
+        if (undone)
+        {
+            DrawBoard();
+        }
+    }
+
+    private void OnResetClicked(object sender, EventArgs e)
+    {
+        if (levels.Count == 0)
+        {
+            return;
+        }
+
+        // Just build a fresh state from the original level
+        StartLevel(currentIndex);
+    }
 }

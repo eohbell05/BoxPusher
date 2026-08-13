@@ -15,6 +15,11 @@ public class GameState
     public int Height { get; set; }
     public int Width { get; set; }
 
+    // Every previous grid, so we can step backwards
+    private List<char[,]> history = new List<char[,]>();
+    private List<int> playerRowHistory = new List<int>();
+    private List<int> playerColHistory = new List<int>();
+
     // Is this cell a target square (with or without something on it)?
     public bool IsTarget(int row, int col)
     {
@@ -112,6 +117,9 @@ public class GameState
             SetCell(newRow, newCol, false, false);
         }
 
+        // Everything checks out, so remember this position before we change it
+        SaveHistory();
+
         // Move the player off the old square
         SetCell(PlayerRow, PlayerCol, false, false);
 
@@ -121,6 +129,47 @@ public class GameState
         PlayerRow = newRow;
         PlayerCol = newCol;
         Moves++;
+
+        return true;
+    }
+
+    // Take a snapshot of where we are before making a move
+    private void SaveHistory()
+    {
+        char[,] copy = new char[Height, Width];
+
+        for (int row = 0; row < Height; row++)
+        {
+            for (int col = 0; col < Width; col++)
+            {
+                copy[row, col] = Grid[row, col];
+            }
+        }
+
+        history.Add(copy);
+        playerRowHistory.Add(PlayerRow);
+        playerColHistory.Add(PlayerCol);
+    }
+
+    // Step back to the previous position. Returns true if there was one.
+    public bool Undo()
+    {
+        if (history.Count == 0)
+        {
+            return false;
+        }
+
+        int last = history.Count - 1;
+
+        Grid = history[last];
+        PlayerRow = playerRowHistory[last];
+        PlayerCol = playerColHistory[last];
+
+        history.RemoveAt(last);
+        playerRowHistory.RemoveAt(last);
+        playerColHistory.RemoveAt(last);
+
+        Moves--;
 
         return true;
     }
