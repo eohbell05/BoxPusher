@@ -6,12 +6,20 @@
 
     <Grid RowDefinitions="Auto,*,Auto" Padding="20" RowSpacing="15">
 
-        <!-- Move counter at the top -->
-        <Label x:Name="MovesLabel"
-               Grid.Row="0"
-               Text="Moves: 0"
-               FontSize="20"
-               HorizontalOptions="Center" />
+        <!-- Move counter and level select button at the top -->
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto">
+
+            <Label x:Name="MovesLabel"
+                   Grid.Column="0"
+                   Text="Moves: 0"
+                   FontSize="20"
+                   VerticalOptions="Center" />
+
+            <Button Grid.Column="1"
+                    Text="Levels"
+                    Clicked="OnLevelsClicked" />
+
+        </Grid>
 
         <!-- The game grid gets built in code and dropped in here -->
         <Grid x:Name="BoardGrid"

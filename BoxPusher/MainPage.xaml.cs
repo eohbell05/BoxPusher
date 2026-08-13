@@ -203,4 +203,15 @@ public partial class MainPage : ContentPage
         // Just build a fresh state from the original level
         StartLevel(currentIndex);
     }
+
+    private async void OnLevelsClicked(object sender, EventArgs e)
+    {
+        if (levels.Count == 0)
+        {
+            return;
+        }
+
+        LevelSelectPage page = new LevelSelectPage(levels, StartLevel);
+        await Navigation.PushAsync(page);
+    }
 }
