@@ -14,6 +14,9 @@ public partial class MainPage : ContentPage
     // Which one we are playing
     private int currentIndex = 0;
 
+    // Completion and best scores, loaded from the device
+    private Progress progress = Progress.Load();
+
     public MainPage()
     {
         InitializeComponent();
@@ -141,6 +144,10 @@ public partial class MainPage : ContentPage
 
             if (state.IsSolved())
             {
+                // Save that this level was finished, and the score if it beats the old one
+                progress.RecordCompletion(levels[currentIndex].Name, state.Moves);
+
+
                 await DisplayAlert("Well done",
                     levels[currentIndex].Name + " complete in " + state.Moves + " moves",
                     "OK");
@@ -211,7 +218,7 @@ public partial class MainPage : ContentPage
             return;
         }
 
-        LevelSelectPage page = new LevelSelectPage(levels, StartLevel);
+        LevelSelectPage page = new LevelSelectPage(levels, progress, StartLevel);
         await Navigation.PushAsync(page);
     }
 }
