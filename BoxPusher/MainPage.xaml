@@ -7,7 +7,7 @@
     <Grid RowDefinitions="Auto,*,Auto" Padding="20" RowSpacing="15">
 
         <!-- Move counter and buttons at the top -->
-        <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+        <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto,Auto" ColumnSpacing="6">
 
             <Label x:Name="MovesLabel"
                    Grid.Column="0"
@@ -15,13 +15,9 @@
                    FontSize="20"
                    VerticalOptions="Center" />
 
-            <Button Grid.Column="1"
-                    Text="Levels"
-                    Clicked="OnLevelsClicked" />
-
-            <Button Grid.Column="2"
-                    Text="Editor"
-                    Clicked="OnEditorClicked" />
+            <Button Grid.Column="1" Text="Levels" Clicked="OnLevelsClicked" />
+            <Button Grid.Column="2" Text="Editor" Clicked="OnEditorClicked" />
+            <Button Grid.Column="3" Text="Settings" Clicked="OnSettingsClicked" />
 
         </Grid>
 

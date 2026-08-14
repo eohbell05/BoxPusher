@@ -5,8 +5,11 @@ public partial class MainPage : ContentPage
 {
     private GameState state;
 
-    // How big each cell is drawn, in device units
-    private const int CellSize = 40;
+    // Read from settings each time so changes take effect
+    private int CellSize
+    {
+        get { return AppSettings.CellSize; }
+    }
 
     // All the built-in levels, once they have loaded
     private List<Level> levels = new List<Level>();
@@ -128,7 +131,6 @@ public partial class MainPage : ContentPage
     }
 
     // Shared by all four buttons
-    // Shared by all four buttons
     private async void DoMove(int rowChange, int colChange)
     {
         if (state == null)
@@ -225,6 +227,12 @@ public partial class MainPage : ContentPage
     private async void OnEditorClicked(object sender, EventArgs e)
     {
         EditorPage page = new EditorPage();
+        await Navigation.PushAsync(page);
+    }
+
+    private async void OnSettingsClicked(object sender, EventArgs e)
+    {
+        SettingsPage page = new SettingsPage();
         await Navigation.PushAsync(page);
     }
 }

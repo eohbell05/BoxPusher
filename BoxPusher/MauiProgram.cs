@@ -19,6 +19,11 @@ public static class MauiProgram
         builder.Logging.AddDebug();
 #endif
 
-        return builder.Build();
+        MauiApp app = builder.Build();
+
+        // Put the saved theme in place before anything shows
+        AppSettings.ApplyTheme();
+
+        return app;
     }
 }

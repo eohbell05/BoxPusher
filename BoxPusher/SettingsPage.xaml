@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BoxPusher.SettingsPage"
+             Title="Settings">
+
+    <VerticalStackLayout Padding="20" Spacing="20">
+
+        <Label Text="Appearance" FontSize="20" FontAttributes="Bold" />
+
+        <HorizontalStackLayout Spacing="10">
+            <Switch x:Name="DarkModeSwitch" Toggled="OnDarkModeToggled" />
+            <Label Text="Dark mode" VerticalOptions="Center" FontSize="16" />
+        </HorizontalStackLayout>
+
+        <Label Text="Cell size" FontSize="16" />
+        <Slider x:Name="CellSizeSlider"
+                Minimum="25"
+                Maximum="60"
+                ValueChanged="OnCellSizeChanged" />
+        <Label x:Name="CellSizeLabel" FontSize="14" TextColor="Gray" />
+
+        <Label Text="Game" FontSize="20" FontAttributes="Bold" />
+
+        <HorizontalStackLayout Spacing="10">
+            <Switch x:Name="SoundSwitch" Toggled="OnSoundToggled" />
+            <Label Text="Sound effects" VerticalOptions="Center" FontSize="16" />
+        </HorizontalStackLayout>
+
+        <Button Text="Reset all progress"
+                Clicked="OnResetProgressClicked"
+                BackgroundColor="IndianRed" />
+
+    </VerticalStackLayout>
+
+</ContentPage>
