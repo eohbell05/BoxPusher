@@ -30,11 +30,26 @@ public partial class MainPage : ContentPage
     {
         base.OnAppearing();
 
-        // Only load once
+        // Only download the built-in levels once
         if (levels.Count == 0)
         {
             await LoadLevelsAsync();
         }
+        else
+        {
+            // Coming back from the editor - pick up any new custom levels
+            RefreshCustomLevels();
+        }
+    }
+
+    // Make sure the list has the latest custom levels on the end
+    private void RefreshCustomLevels()
+    {
+        List<Level> custom = CustomLevelStore.Load();
+
+        // Drop any custom ones already in the list, then add them all back
+        levels.RemoveAll(l => custom.Exists(c => c.Name == l.Name));
+        levels.AddRange(custom);
     }
 
     private async Task LoadLevelsAsync()
@@ -42,6 +57,9 @@ public partial class MainPage : ContentPage
         MovesLabel.Text = "Loading levels...";
 
         levels = await LevelStore.GetBuiltInLevelsAsync();
+
+        // Add any levels the user has built themselves
+        levels.AddRange(CustomLevelStore.Load());
 
         if (levels.Count == 0)
         {
@@ -54,6 +72,8 @@ public partial class MainPage : ContentPage
 
         StartLevel(0);
     }
+
+
 
     // Start playing the level at this position in the list
     private void StartLevel(int index)
@@ -144,17 +164,21 @@ public partial class MainPage : ContentPage
         {
             DrawBoard();
 
+            // Small pulse on the player so movement feels less static
+            await AnimatePlayer();
+
             if (state.IsSolved())
             {
-                // Save that this level was finished, and the score if it beats the old one
                 progress.RecordCompletion(levels[currentIndex].Name, state.Moves);
 
+                // Flash the whole board when the level is solved
+                await BoardGrid.ScaleTo(1.08, 150);
+                await BoardGrid.ScaleTo(1.0, 150);
 
                 await DisplayAlert("Well done",
                     levels[currentIndex].Name + " complete in " + state.Moves + " moves",
                     "OK");
 
-                // Move on to the next level if there is one
                 if (currentIndex + 1 < levels.Count)
                 {
                     StartLevel(currentIndex + 1);
@@ -163,6 +187,20 @@ public partial class MainPage : ContentPage
                 {
                     await DisplayAlert("Finished", "You have completed all the levels!", "OK");
                 }
+            }
+        }
+    }
+
+    // Find the player circle on the board and give it a quick bounce
+    private async Task AnimatePlayer()
+    {
+        foreach (IView child in BoardGrid.Children)
+        {
+            if (child is Ellipse player)
+            {
+                await player.ScaleTo(1.25, 60);
+                await player.ScaleTo(1.0, 60);
+                return;
             }
         }
     }
