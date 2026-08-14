@@ -1,37 +1,22 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="BoxPusher.MainPage"
-             Title="Box Pusher">
+             x:Class="BoxPusher.TestPage"
+             Title="Test Your Level">
 
     <Grid RowDefinitions="Auto,*,Auto" Padding="20" RowSpacing="15">
 
-        <!-- Move counter and buttons at the top -->
-        <Grid Grid.Row="0" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+        <Label x:Name="MovesLabel"
+               Grid.Row="0"
+               Text="Solve it to save it"
+               FontSize="18"
+               HorizontalOptions="Center" />
 
-            <Label x:Name="MovesLabel"
-                   Grid.Column="0"
-                   Text="Moves: 0"
-                   FontSize="20"
-                   VerticalOptions="Center" />
-
-            <Button Grid.Column="1"
-                    Text="Levels"
-                    Clicked="OnLevelsClicked" />
-
-            <Button Grid.Column="2"
-                    Text="Editor"
-                    Clicked="OnEditorClicked" />
-
-        </Grid>
-
-        <!-- The game grid gets built in code and dropped in here -->
         <Grid x:Name="BoardGrid"
               Grid.Row="1"
               HorizontalOptions="Center"
               VerticalOptions="Center" />
 
-        <!-- Direction buttons at the bottom -->
         <Grid Grid.Row="2"
               ColumnDefinitions="*,*,*"
               RowDefinitions="Auto,Auto,Auto"
@@ -44,7 +29,8 @@
             <Button Text="Right" Grid.Row="1" Grid.Column="2" Clicked="OnRightClicked" />
 
             <Button Text="Undo" Grid.Row="2" Grid.Column="0" Clicked="OnUndoClicked" />
-            <Button Text="Reset" Grid.Row="2" Grid.Column="2" Clicked="OnResetClicked" />
+            <Button Text="Reset" Grid.Row="2" Grid.Column="1" Clicked="OnResetClicked" />
+            <Button Text="Give Up" Grid.Row="2" Grid.Column="2" Clicked="OnGiveUpClicked" />
 
         </Grid>
 

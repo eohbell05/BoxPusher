@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="BoxPusher.EditorPage"
+             Title="Level Editor">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="15">
+
+            <!-- Level name -->
+            <Entry x:Name="NameEntry"
+                   Placeholder="Level name"
+                   FontSize="16" />
+
+            <!-- Grid size -->
+            <HorizontalStackLayout Spacing="10">
+                <Label Text="Size:" VerticalOptions="Center" FontSize="16" />
+                <Picker x:Name="WidthPicker" Title="Width" WidthRequest="90" />
+                <Label Text="x" VerticalOptions="Center" FontSize="16" />
+                <Picker x:Name="HeightPicker" Title="Height" WidthRequest="90" />
+                <Button Text="New Grid" Clicked="OnNewGridClicked" />
+            </HorizontalStackLayout>
+
+            <!-- What we are placing -->
+            <Label Text="Tap a tool, then tap the grid:" FontSize="16" />
+            <HorizontalStackLayout Spacing="8">
+                <Button x:Name="WallButton" Text="Wall" Clicked="OnToolClicked" />
+                <Button x:Name="FloorButton" Text="Floor" Clicked="OnToolClicked" />
+                <Button x:Name="BoxButton" Text="Box" Clicked="OnToolClicked" />
+                <Button x:Name="TargetButton" Text="Target" Clicked="OnToolClicked" />
+                <Button x:Name="PlayerButton" Text="Player" Clicked="OnToolClicked" />
+            </HorizontalStackLayout>
+
+            <!-- The editable grid -->
+            <ScrollView Orientation="Horizontal">
+                <Grid x:Name="EditGrid" HorizontalOptions="Start" />
+            </ScrollView>
+
+            <Label x:Name="StatusLabel" FontSize="14" TextColor="Gray" />
+
+            <Button Text="Test and Save"
+                    Clicked="OnTestClicked"
+                    BackgroundColor="SeaGreen" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

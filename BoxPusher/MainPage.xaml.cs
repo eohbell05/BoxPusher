@@ -221,4 +221,10 @@ public partial class MainPage : ContentPage
         LevelSelectPage page = new LevelSelectPage(levels, progress, StartLevel);
         await Navigation.PushAsync(page);
     }
+
+    private async void OnEditorClicked(object sender, EventArgs e)
+    {
+        EditorPage page = new EditorPage();
+        await Navigation.PushAsync(page);
+    }
 }
